@@ -37,6 +37,7 @@ async def router_node(state: AgentState) -> Dict[str, Any]:
         f"Has Freight Quotes: {state.get('freight_quotes') is not None}\n"
         f"Has Cost Analysis: {state.get('cost_analysis') is not None}\n"
         f"Approval Decision: {state.get('approval_decision')}\n"
+        f"Route: {state.get('raw_event', {}).get('route', 'unknown')}\n"
         f"{news_info}"
     )
     

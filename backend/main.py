@@ -215,13 +215,14 @@ def get_polling_status():
     return get_status()
 
 
+class SimulateEventPayload(BaseModel):
+    route: str = "Shanghai to Los Angeles"
+    vessel_id: str = "Evergreen"
+    description: str = "Simulated maritime disruption for testing."
+    event_type: str = "Gale Warning"
+
 @app.post("/events/simulate", tags=["Events"])
-async def simulate_event(
-    route: str = "Shanghai to Los Angeles",
-    vessel_id: str = "Evergreen",
-    description: str = "Simulated maritime disruption for testing.",
-    event_type: str = "Gale Warning",
-):
+async def simulate_event(payload: SimulateEventPayload):
     """
     Manually simulate a maritime disruption event and trigger the
     LangGraph agent — useful for demos and frontend development without
@@ -239,14 +240,26 @@ async def simulate_event(
     except Exception:
         pass
 
+    from langchain_core.messages import SystemMessage
+    from datetime import datetime, timezone
     initial_state = {
         "event_id": event_id,
+        "route": payload.route,
+        "vessel_id": payload.vessel_id,
+        "current_step": "start",
+        "messages": [SystemMessage(content=f"Simulated event triggered: {payload.event_type} - {payload.description}")],
+        "audit_trail": [{
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "node": "system",
+            "action": "event_received",
+            "details": f"Simulated {payload.event_type} on {payload.route} affecting {payload.vessel_id}"
+        }],
         "raw_event": {
-            "vessel_id": vessel_id,
+            "vessel_id": payload.vessel_id,
             "source": "SIMULATION",
-            "route": route,
-            "description": description,
-            "event_type": event_type,
+            "route": payload.route,
+            "description": payload.description,
+            "event_type": payload.event_type,
         },
     }
 
@@ -263,18 +276,18 @@ async def simulate_event(
         "status": "started",
         "event_id": event_id,
         "thread_id": thread_id,
-        "route": route,
-        "vessel_id": vessel_id,
+        "route": payload.route,
+        "vessel_id": payload.vessel_id,
     }
     from .websockets.manager import broadcast_api_call
     await broadcast_api_call(
         service="Marga Agent Backend",
         endpoint="/events/simulate",
         request_payload={
-            "route": route,
-            "vessel_id": vessel_id,
-            "description": description,
-            "event_type": event_type,
+            "route": payload.route,
+            "vessel_id": payload.vessel_id,
+            "description": payload.description,
+            "event_type": payload.event_type,
         },
         response_payload=response_data,
         status=200
@@ -295,12 +308,13 @@ def get_news_polling_status():
     return get_news_status()
 
 
+class NewsSimulatePayload(BaseModel):
+    headline: str = "Major port strike shuts down Shanghai Terminal 2, affecting Trans-Pacific shipping"
+    description: str = "Workers at Shanghai's busiest container terminal have launched an indefinite strike, halting operations and causing severe delays for vessels on the Trans-Pacific route to Los Angeles and Long Beach."
+    source: str = "Reuters"
+
 @app.post("/events/news/simulate", tags=["Events"])
-async def simulate_news_event(
-    headline: str = "Major port strike shuts down Shanghai Terminal 2, affecting Trans-Pacific shipping",
-    description: str = "Workers at Shanghai's busiest container terminal have launched an indefinite strike, halting operations and causing severe delays for vessels on the Trans-Pacific route to Los Angeles and Long Beach.",
-    source: str = "Reuters",
-):
+async def simulate_news_event(payload: NewsSimulatePayload):
     """
     Manually simulate a news article and run it through Gemini 2.5 Pro
     analysis. If the LLM identifies a real disruption, it triggers the
@@ -309,16 +323,16 @@ async def simulate_news_event(
     Perfect for demos — no NEWS_API_KEY required.
     """
     from .services.news_poller import simulate_news_article
-    result = await simulate_news_article(headline, description, source)
+    result = await simulate_news_article(payload.headline, payload.description, payload.source)
     
     from .websockets.manager import broadcast_api_call
     await broadcast_api_call(
         service="Marga Agent Backend",
         endpoint="/events/news/simulate",
         request_payload={
-            "headline": headline,
-            "description": description,
-            "source": source
+            "headline": payload.headline,
+            "description": payload.description,
+            "source": payload.source
         },
         response_payload=result,
         status=200
