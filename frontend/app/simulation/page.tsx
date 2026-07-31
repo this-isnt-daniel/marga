@@ -89,10 +89,33 @@ export default function SimulationPage() {
       }
 
       const isNews = sbxSource === "News";
+      
+      let realisticHeadline = "";
+      let realisticDescription = "";
+      
+      if (sbxSource === "News") {
+        realisticHeadline = `Global Supply Chain Alert: Massive Strike Action Detected`;
+        realisticDescription = `Major union workers have initiated an unannounced strike affecting operations at key logistics hubs.`;
+      } else if (sbxSource === "Weather") {
+        realisticHeadline = `NOAA Alert: Category 5 Hurricane Approaching Major Port`;
+        realisticDescription = `NOAA National Hurricane Center has issued extreme weather warnings. All port operations in the projected path are being suspended.`;
+      } else if (sbxSource === "Supplier") {
+        realisticHeadline = `Tier 1 Supplier Crisis: Factory Fire Halts Production`;
+        realisticDescription = `A devastating fire has broken out at a primary manufacturing facility, causing an immediate halt to all production lines.`;
+      } else if (sbxSource === "Cyber") {
+        realisticHeadline = `Ransomware Attack Disables Terminal Operating System`;
+        realisticDescription = `A sophisticated cyber attack has encrypted critical port infrastructure, forcing a complete shutdown of automated terminal operations.`;
+      } else if (sbxSource === "Regulatory") {
+        realisticHeadline = `Emergency Customs Embargo Enforced`;
+        realisticDescription = `Government regulatory bodies have implemented an immediate embargo on specific imports pending a massive customs investigation.`;
+      } else {
+        realisticHeadline = `Sandbox ${sbxSource} Alert Issued`;
+        realisticDescription = `A severe ${sbxSource.toLowerCase()} event was detected.`;
+      }
 
       const res = await simulateSandbox({
-        event_headline: isNews ? "Sandbox News Scenario Triggered" : `Sandbox ${sbxSource} Alert Issued`,
-        event_description: isNews ? "A custom news disruption was injected via the Sandbox mode." : `A severe ${sbxSource.toLowerCase()} event was detected.`,
+        event_headline: realisticHeadline,
+        event_description: realisticDescription,
         severity: sbxSeverity,
         exposure_value_usd: mockExposure,
         matched_pos: mockMatchedPos,

@@ -187,8 +187,79 @@ async def simulate_sandbox(payload: SandboxPayload):
     }
     
     async def run_graph_task():
+        from .websockets.manager import broadcast_agent_thought, broadcast_api_call, broadcast_reasoning_step
         try:
             print(f"Starting Sandbox graph for {event_id}...")
+            
+            # 1. Simulate Poller Broadcast
+            await asyncio.sleep(0.5)
+            await broadcast_agent_thought(
+                node="news_poller",
+                thought=f"Simulated God Mode event received: {payload.event_headline}",
+                confidence_score=1.0
+            )
+            
+            # 2. Simulate Analyzer Broadcast
+            await asyncio.sleep(1.0)
+            await broadcast_agent_thought(
+                node="news_analyzer",
+                thought=f"Disruption detected from Sandbox override: {payload.event_description}. Severity: {payload.severity}. Injecting custom ERP and Freight parameters into state.",
+                confidence_score=1.0
+            )
+
+            # 3. Simulate ERP Broadcast
+            await asyncio.sleep(1.5)
+            
+            # Dynamic ERP thought
+            if payload.exposure_value_usd > 10000000:
+                erp_context = f"CATASTROPHIC EXPOSURE: Found {len(payload.matched_pos)} high-value POs at risk. Immediate executive escalation required for ${payload.exposure_value_usd:,.2f} inventory."
+            elif payload.exposure_value_usd > 1000000:
+                erp_context = f"High-risk inventory identified. {len(payload.matched_pos)} POs worth ${payload.exposure_value_usd:,.2f} are currently transiting the affected zone."
+            elif payload.exposure_value_usd > 0:
+                erp_context = f"Minor exposure detected. Found {len(payload.matched_pos)} POs worth ${payload.exposure_value_usd:,.2f}. Monitoring situation closely."
+            else:
+                erp_context = "No direct inventory exposure found in the affected region. $0 at risk."
+                
+            await broadcast_agent_thought(
+                node="reasoning_node",
+                thought=erp_context,
+                confidence_score=0.96,
+                tool_calls=[{"tool_name": "query_erp", "rationale": "Checking active purchase orders against disruption zone."}]
+            )
+            await broadcast_reasoning_step(
+                step_number=1,
+                step_title="ERP Exposure Analysis",
+                reasoning_text=erp_context,
+                data_snapshot={"matched_pos": payload.matched_pos, "exposure_value_usd": payload.exposure_value_usd},
+                confidence=0.96
+            )
+
+            # 4. Simulate Freight Broadcast
+            await asyncio.sleep(1.5)
+            
+            # Dynamic Freight thought
+            freight_len = len(payload.freight_quotes)
+            if freight_len == 0 or any("error" in q for q in payload.freight_quotes):
+                freight_context = "CRITICAL: No viable freight capacity available. All regional carriers have suspended operations."
+            elif freight_len > 2:
+                freight_context = f"Capacity secured. Retrieved {freight_len} alternative quotes across mixed modes (Ocean/Air). Standard rerouting protocols can be applied."
+            else:
+                freight_context = f"Limited capacity detected. Only {freight_len} premium routing options available. Expedited rates apply."
+                
+            await broadcast_agent_thought(
+                node="reasoning_node",
+                thought=freight_context,
+                confidence_score=0.93,
+                tool_calls=[{"tool_name": "get_freight_quotes", "rationale": "Polling project44 for emergency capacity."}]
+            )
+            await broadcast_reasoning_step(
+                step_number=2,
+                step_title="Freight Quote Analysis",
+                reasoning_text=freight_context,
+                data_snapshot={"quote_count": freight_len, "quotes": payload.freight_quotes},
+                confidence=0.93
+            )
+            
             await graph.ainvoke(initial_state, config=config)
             print(f"Sandbox Graph completed successfully for {event_id}.")
         except Exception as e:
