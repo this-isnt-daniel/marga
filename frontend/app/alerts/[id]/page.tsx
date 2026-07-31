@@ -430,9 +430,9 @@ export default function AlertDetailsPage() {
                     <span className="text-on-surface-variant text-[10px] font-bold tracking-widest mb-2 block uppercase">Alternative</span>
                     <h3 className="text-on-surface font-bold text-sm">Accept Delay</h3>
                     <p className="text-on-surface-variant text-[11px] mt-2 leading-relaxed font-medium">
-                      Stockout cost estimate<br />
-                      Delay impact<br />
-                      Production line impact
+                      Projected stockout: ${card.cost_analysis.stockout_cost_usd.toLocaleString()}<br />
+                      No reroute action taken<br />
+                      Inventory depletion expected
                     </p>
                   </div>
                   <div className="mt-4 pt-4 border-t border-outline-variant flex justify-between items-end">

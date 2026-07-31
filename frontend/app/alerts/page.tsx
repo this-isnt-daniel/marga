@@ -107,7 +107,7 @@ export default function AlertsPage() {
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-[12px] font-semibold text-on-surface">{card.event.description}</h3>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-error/10 text-error">
-                  High
+                  High Risk
                 </span>
               </div>
               
@@ -124,11 +124,11 @@ export default function AlertsPage() {
               </div>
 
               <div className="h-1.5 bg-surface-container-low rounded-full overflow-hidden mb-3">
-                <div className="h-full bg-amber-500 w-[78%]"></div>
+                <div className="h-full bg-amber-500" style={{ width: card.status === 'pending' ? '50%' : '100%' }}></div>
               </div>
               
               <div className="flex justify-between items-center text-[9px] text-on-surface-variant font-bold uppercase tracking-widest">
-                <span>Detected {new Date(card.event.detected_at).toLocaleTimeString()} · Awaiting Approval</span>
+                <span>Detected {new Date(card.event.detected_at).toLocaleTimeString()} · {card.status === 'pending' ? 'Awaiting Approval' : 'Action Taken'}</span>
                 <span className="material-symbols-outlined text-primary text-[16px]">chevron_right</span>
               </div>
             </Link>
