@@ -32,6 +32,7 @@ export default function SimulationPage() {
   const [triggering, setTriggering] = useState(false);
 
   // Sandbox State
+  const [sbxSource, setSbxSource] = useState("News");
   const [sbxSeverity, setSbxSeverity] = useState("Critical");
   const [sbxExposure, setSbxExposure] = useState<number>(5000000);
   const [sbxFreightType, setSbxFreightType] = useState("abundant");
@@ -55,13 +56,24 @@ export default function SimulationPage() {
         mockFreightQuotes = [
           { quote_id: "FQ-SBX-1", carrier: "SpeedAir (Air)", mode: "air", cost_usd: 85000, transit_days: 2 }
         ];
+      } else if (sbxFreightType === "mixed") {
+        mockFreightQuotes = [
+          { quote_id: "FQ-SBX-1", carrier: "Oceanic Lines (Ocean)", mode: "ocean", cost_usd: 14000, transit_days: 18 },
+          { quote_id: "FQ-SBX-2", carrier: "SpeedAir (Air)", mode: "air", cost_usd: 65000, transit_days: 3 }
+        ];
+      } else if (sbxFreightType === "rail") {
+        mockFreightQuotes = [
+          { quote_id: "FQ-SBX-1", carrier: "EuroRail (Train)", mode: "rail", cost_usd: 11000, transit_days: 8 }
+        ];
       } else if (sbxFreightType === "none") {
         mockFreightQuotes = [{ error: "No capacity available on any mode" }];
       }
 
+      const isNews = sbxSource === "News";
+
       const res = await simulateSandbox({
-        event_headline: "Sandbox Custom Scenario Triggered",
-        event_description: "A custom disruption was injected via the Sandbox mode by a judge.",
+        event_headline: isNews ? "Sandbox News Scenario Triggered" : `Sandbox ${sbxSource} Alert Issued`,
+        event_description: isNews ? "A custom news disruption was injected via the Sandbox mode." : `A severe ${sbxSource.toLowerCase()} event was detected.`,
         severity: sbxSeverity,
         exposure_value_usd: mockExposure,
         matched_pos: mockMatchedPos,
@@ -251,7 +263,21 @@ export default function SimulationPage() {
             <h2 className="text-[13px] font-bold">Sandbox Mode (API Override)</h2>
             <span className="text-[9px] bg-primary-container text-on-primary-container px-1.5 py-0.5 rounded uppercase tracking-widest font-bold ml-auto">God Mode</span>
           </div>
-          <div className="grid grid-cols-3 gap-unit-md items-end">
+          <div className="grid grid-cols-4 gap-unit-md items-end">
+            <div>
+              <label className="block text-[10px] font-bold text-on-surface-variant uppercase mb-1">Disruption Source</label>
+              <select 
+                value={sbxSource}
+                onChange={(e) => setSbxSource(e.target.value)}
+                className="w-full bg-surface text-[11px] text-on-surface p-2 rounded-lg border border-outline-variant"
+              >
+                <option value="News">News (Geopolitical / Strikes)</option>
+                <option value="Weather">Weather (NOAA Alerts)</option>
+                <option value="Supplier">Supplier (Bankruptcy / Fire)</option>
+                <option value="Cyber">Cyber Attack (Port Hack)</option>
+                <option value="Regulatory">Regulatory (Customs Ban)</option>
+              </select>
+            </div>
             <div>
               <label className="block text-[10px] font-bold text-on-surface-variant uppercase mb-1">Disruption Severity</label>
               <select 
@@ -259,9 +285,11 @@ export default function SimulationPage() {
                 onChange={(e) => setSbxSeverity(e.target.value)}
                 className="w-full bg-surface text-[11px] text-on-surface p-2 rounded-lg border border-outline-variant"
               >
-                <option value="Low">Low (Minor Delay)</option>
-                <option value="Medium">Medium (Route Altered)</option>
-                <option value="Critical">Critical (Total Blockage)</option>
+                <option value="Minor">Minor (No known threat)</option>
+                <option value="Moderate">Moderate (Possible threat)</option>
+                <option value="Severe">Severe (Significant threat)</option>
+                <option value="Extreme">Extreme (Extraordinary threat)</option>
+                <option value="Unknown">Unknown</option>
               </select>
             </div>
             <div>
@@ -271,7 +299,9 @@ export default function SimulationPage() {
                 onChange={(e) => setSbxExposure(Number(e.target.value))}
                 className="w-full bg-surface text-[11px] text-on-surface p-2 rounded-lg border border-outline-variant"
               >
+                <option value={15000000}>Catastrophic ($15,000,000 at risk)</option>
                 <option value={5000000}>High Risk ($5,000,000 at risk)</option>
+                <option value={800000}>Medium Risk ($800,000 at risk)</option>
                 <option value={50000}>Low Risk ($50,000 at risk)</option>
                 <option value={0}>No Exposure ($0 at risk)</option>
               </select>
@@ -284,6 +314,8 @@ export default function SimulationPage() {
                 className="w-full bg-surface text-[11px] text-on-surface p-2 rounded-lg border border-outline-variant"
               >
                 <option value="abundant">Abundant Cheap Ocean ($8k)</option>
+                <option value="mixed">Mixed Ocean & Air Options</option>
+                <option value="rail">Overland Rail Available ($11k)</option>
                 <option value="expensive_air_only">Expensive Air Only ($85k)</option>
                 <option value="none">No Capacity (Error)</option>
               </select>
