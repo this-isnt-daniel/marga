@@ -50,16 +50,7 @@ export default function AlertsPage() {
       <div className="flex justify-between items-center bg-surface-container-lowest p-2 rounded-lg border border-outline-variant shadow-sm">
         <div className="flex space-x-2">
           <button className="px-4 py-1.5 rounded-full bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest">
-            All
-          </button>
-          <button className="px-4 py-1.5 rounded-full bg-transparent text-on-surface-variant hover:bg-surface-container-high transition-colors font-bold text-xs uppercase tracking-widest">
-            Awaiting Approval
-          </button>
-          <button className="px-4 py-1.5 rounded-full bg-transparent text-on-surface-variant hover:bg-surface-container-high transition-colors font-bold text-xs uppercase tracking-widest">
-            In Progress
-          </button>
-          <button className="px-4 py-1.5 rounded-full bg-transparent text-on-surface-variant hover:bg-surface-container-high transition-colors font-bold text-xs uppercase tracking-widest">
-            Monitoring
+            All Disruptions
           </button>
         </div>
         
@@ -106,9 +97,6 @@ export default function AlertsPage() {
             <Link key={card.event.event_id} href={`/alerts/${card.event.event_id}`} className="block card-surface rounded-xl border-l-4 border-l-amber-500 p-unit-md hover:shadow-md transition-shadow cursor-pointer">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-[12px] font-semibold text-on-surface">{card.event.description}</h3>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-error/10 text-error">
-                  High Risk
-                </span>
               </div>
               
               <div className="flex items-center space-x-3 mb-4">

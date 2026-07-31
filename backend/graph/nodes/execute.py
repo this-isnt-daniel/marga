@@ -2,6 +2,7 @@ from typing import Any, Dict
 from ..state import AgentState
 import requests
 import os
+import asyncio
 
 BOOKING_API_URL = os.getenv("BOOKING_API_URL", "http://localhost:8003")
 
@@ -18,12 +19,14 @@ async def execute_node(state: AgentState) -> Dict[str, Any]:
     matched_pos = state.get("matched_pos", [])
 
     if decision == "approved" and quote_id:
+        await asyncio.sleep(1.5)
         await broadcast_agent_thought(
             node="execute",
             thought=f"Approval received. Booking reroute via quote {quote_id} for {len(matched_pos)} POs...",
             confidence_score=0.99
         )
 
+        await asyncio.sleep(2.0)
         # Call the real booking API
         payload = {
             "event_id": event_id,
@@ -43,6 +46,7 @@ async def execute_node(state: AgentState) -> Dict[str, Any]:
             booking = resp.json()
             result = f"Booking confirmed. Reference: {booking.get('booking_reference', 'N/A')}"
             
+            await asyncio.sleep(1.5)
             await broadcast_api_call(
                 service="Mock Booking Engine",
                 endpoint="/book",
@@ -51,6 +55,7 @@ async def execute_node(state: AgentState) -> Dict[str, Any]:
                 status=200
             )
 
+            await asyncio.sleep(1.5)
             await broadcast_agent_thought(
                 node="execute",
                 thought=result,

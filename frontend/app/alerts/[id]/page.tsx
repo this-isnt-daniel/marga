@@ -13,7 +13,7 @@ export default function AlertDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const [decision, setDecision] = useState<null | 'approved' | 'rejected' | 'redirected' | 'info'>(null);
+  const [decision, setDecision] = useState<null | 'approved' | 'rejected' | 'redirected' | 'info' | 'executing'>(null);
   const [redirectOption, setRedirectOption] = useState<null | string>(null);
   const [infoLoading, setInfoLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,12 +41,14 @@ export default function AlertDetailsPage() {
   const handleApprove = async () => {
     if (!card) return;
     setIsSubmitting(true);
+    setDecision('executing');
     try {
       await submitDecision(card.event.event_id, 'approved', card.cost_analysis.best_reroute_option?.quote_id || null, 'Proceed with recommended action.');
-      setDecision('approved');
+      setTimeout(() => setDecision('approved'), 4000); // Wait for agent simulation to finish before showing confirmation
     } catch (e) {
       console.error(e);
       alert('Failed to submit decision');
+      setDecision(null);
     } finally {
       setIsSubmitting(false);
     }
@@ -102,6 +104,20 @@ export default function AlertDetailsPage() {
   const bestQuote = card.freight_options.quotes.find(q => q.quote_id === bestQuoteId);
 
   const renderDecisionContent = () => {
+    if (decision === 'executing') {
+      return (
+        <div className="flex flex-col items-center justify-center text-center space-y-4 py-4">
+          <span className="material-symbols-outlined text-primary text-[48px] animate-spin">sync</span>
+          <div className="space-y-2">
+            <h2 className="text-on-surface text-xl font-bold">Agent Executing...</h2>
+            <p className="text-on-surface-variant text-sm mt-2 font-medium">
+              Transmitting approval to booking API. Rerouting POs {card.exposure.matched_pos.slice(0, 3).join(", ")}...
+            </p>
+          </div>
+        </div>
+      );
+    }
+
     if (decision === 'approved') {
       return (
         <div className="flex flex-col items-center justify-center text-center space-y-4 py-4">
