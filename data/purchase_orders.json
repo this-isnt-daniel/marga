@@ -184,37 +184,109 @@
     {
         "name": "PO-7001",
         "docstatus": 1,
-        "supplier": "Hormuz Oil",
+        "supplier": "Saudi Aramco Exports",
         "custom_vessel_id": "NEWS-AUTO",
         "custom_route": "Middle East to Europe via Strait of Hormuz",
         "custom_match_confidence": 1.0,
-        "custom_customer_order_ids": ["CO-701"],
+        "custom_customer_order_ids": ["CO-7101", "CO-7102"],
         "items": [
-            {"item_code": "ITEM-H1", "item_name": "Hormuz Oil Barrels", "qty": 5000, "rate": 80.0}
+            {"item_code": "OIL-010", "item_name": "Crude Oil Barrels", "qty": 30000, "rate": 82.0}
+        ]
+    },
+    {
+        "name": "PO-7002",
+        "docstatus": 1,
+        "supplier": "ADNOC LNG Division",
+        "custom_vessel_id": "NEWS-AUTO",
+        "custom_route": "Middle East to Europe via Strait of Hormuz",
+        "custom_match_confidence": 1.0,
+        "custom_customer_order_ids": ["CO-7103"],
+        "items": [
+            {"item_code": "LNG-010", "item_name": "Liquefied Natural Gas", "qty": 8000, "rate": 115.0}
+        ]
+    },
+    {
+        "name": "PO-7003",
+        "docstatus": 1,
+        "supplier": "SABIC Petrochemicals",
+        "custom_vessel_id": "NEWS-AUTO",
+        "custom_route": "Middle East to Europe via Strait of Hormuz",
+        "custom_match_confidence": 1.0,
+        "custom_customer_order_ids": ["CO-7104", "CO-7105"],
+        "items": [
+            {"item_code": "CHEM-010", "item_name": "Industrial Ethylene", "qty": 12000, "rate": 125.0}
         ]
     },
     {
         "name": "PO-8001",
         "docstatus": 1,
-        "supplier": "Red Sea Shipping",
+        "supplier": "Tata Steel Exports",
         "custom_vessel_id": "NEWS-AUTO",
         "custom_route": "Asia to Europe via Bab el Mandeb",
         "custom_match_confidence": 1.0,
-        "custom_customer_order_ids": ["CO-801"],
+        "custom_customer_order_ids": ["CO-8101"],
         "items": [
-            {"item_code": "ITEM-B1", "item_name": "Bab el Mandeb Cargo", "qty": 2000, "rate": 100.0}
+            {"item_code": "STL-010", "item_name": "Hot-Rolled Steel Coils", "qty": 4000, "rate": 380.0}
+        ]
+    },
+    {
+        "name": "PO-8002",
+        "docstatus": 1,
+        "supplier": "Reliance Textiles",
+        "custom_vessel_id": "NEWS-AUTO",
+        "custom_route": "Asia to Europe via Bab el Mandeb",
+        "custom_match_confidence": 1.0,
+        "custom_customer_order_ids": ["CO-8102"],
+        "items": [
+            {"item_code": "TEX-010", "item_name": "Premium Cotton Fabric", "qty": 6000, "rate": 95.0}
+        ]
+    },
+    {
+        "name": "PO-8003",
+        "docstatus": 1,
+        "supplier": "Vietnam Electronics JSC",
+        "custom_vessel_id": "NEWS-AUTO",
+        "custom_route": "Asia to Europe via Bab el Mandeb",
+        "custom_match_confidence": 1.0,
+        "custom_customer_order_ids": ["CO-8103", "CO-8104"],
+        "items": [
+            {"item_code": "ELEC-010", "item_name": "Consumer Electronics", "qty": 3000, "rate": 650.0}
         ]
     },
     {
         "name": "PO-9001",
         "docstatus": 1,
-        "supplier": "Malacca Tech",
+        "supplier": "TSMC Singapore",
         "custom_vessel_id": "NEWS-AUTO",
         "custom_route": "Asia to Europe via Strait of Malacca",
         "custom_match_confidence": 1.0,
-        "custom_customer_order_ids": ["CO-901"],
+        "custom_customer_order_ids": ["CO-9101", "CO-9102"],
         "items": [
-            {"item_code": "ITEM-M1", "item_name": "Malacca Electronics", "qty": 10000, "rate": 20.0}
+            {"item_code": "SEMI-010", "item_name": "Semiconductor Wafers", "qty": 2000, "rate": 4200.0}
+        ]
+    },
+    {
+        "name": "PO-9002",
+        "docstatus": 1,
+        "supplier": "Samsung SDI Malaysia",
+        "custom_vessel_id": "NEWS-AUTO",
+        "custom_route": "Asia to Europe via Strait of Malacca",
+        "custom_match_confidence": 1.0,
+        "custom_customer_order_ids": ["CO-9103"],
+        "items": [
+            {"item_code": "BATT-010", "item_name": "EV Battery Cells", "qty": 15000, "rate": 320.0}
+        ]
+    },
+    {
+        "name": "PO-9003",
+        "docstatus": 1,
+        "supplier": "Foxconn Penang",
+        "custom_vessel_id": "NEWS-AUTO",
+        "custom_route": "Asia to Europe via Strait of Malacca",
+        "custom_match_confidence": 1.0,
+        "custom_customer_order_ids": ["CO-9104", "CO-9105"],
+        "items": [
+            {"item_code": "PCB-010", "item_name": "Assembled PCBs", "qty": 25000, "rate": 180.0}
         ]
     }
 ]

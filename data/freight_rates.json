@@ -53,7 +53,7 @@
         "destination": "Europe via Cape of Good Hope",
         "mode": "OCN",
         "totalCharge": { "amount": 3.5, "currency": "USD", "basis": "per_kg" },
-        "transitDays": 25
+        "transitDays": 28
     },
     {
         "capacityProviderId": "DHL",
@@ -102,5 +102,29 @@
         "mode": "OCN",
         "totalCharge": { "amount": 5.0, "currency": "USD", "basis": "per_kg" },
         "transitDays": 35
+    },
+    {
+        "capacityProviderId": "CMA_CGM",
+        "origin": "Middle East",
+        "destination": "Europe via Suez Canal",
+        "mode": "OCN",
+        "totalCharge": { "amount": 2.8, "currency": "USD", "basis": "per_kg" },
+        "transitDays": 18
+    },
+    {
+        "capacityProviderId": "MSC_REROUTE",
+        "origin": "Asia",
+        "destination": "Europe via Cape of Good Hope",
+        "mode": "OCN",
+        "totalCharge": { "amount": 3.8, "currency": "USD", "basis": "per_kg" },
+        "transitDays": 32
+    },
+    {
+        "capacityProviderId": "COSCO_REROUTE",
+        "origin": "Asia",
+        "destination": "Europe via Sunda Strait",
+        "mode": "OCN",
+        "totalCharge": { "amount": 4.2, "currency": "USD", "basis": "per_kg" },
+        "transitDays": 28
     }
 ]

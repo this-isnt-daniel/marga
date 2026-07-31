@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from typing import List
+from typing import List, Optional
 from ..graph.builder import graph
 from ..schemas.api import ApprovalCard, ApprovalDecision
 from ..models.database import get_db
@@ -182,3 +182,13 @@ async def get_active_events(db: AsyncSession = Depends(get_db)):
         })
 
     return events
+
+
+@router.get("/audit/logs")
+async def get_audit_log(limit: int = 100, event_id: Optional[str] = None):
+    """
+    Returns the in-memory audit trail of all agent actions.
+    Supports filtering by event_id and limiting results.
+    """
+    from ..websockets.manager import get_audit_logs
+    return get_audit_logs(limit=limit, event_id=event_id)

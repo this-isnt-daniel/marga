@@ -47,7 +47,7 @@ _structured_llm = None
 def _get_structured_llm():
     global _analysis_llm, _structured_llm
     if _structured_llm is None:
-        _analysis_llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview", temperature=0.1)
+        _analysis_llm = ChatGoogleGenerativeAI(model="gemini-3.1-pro", temperature=0.1)
         _structured_llm = _analysis_llm.with_structured_output(NewsAnalysisResult)
     return _structured_llm
 

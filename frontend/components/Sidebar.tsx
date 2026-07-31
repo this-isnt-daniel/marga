@@ -41,6 +41,10 @@ export default function Sidebar() {
           <span className="material-symbols-outlined text-[20px]">api</span>
           <span className="text-sm">API Integrations</span>
         </Link>
+        <Link href="/audit" className={`flex items-center space-x-unit-md px-unit-md py-unit-sm rounded-lg group transition-colors ${pathname.startsWith('/audit') ? 'bg-primary/10 text-primary font-semibold' : 'text-on-surface-variant hover:bg-surface-container-high'}`}>
+          <span className="material-symbols-outlined text-[20px]">receipt_long</span>
+          <span className="text-sm">Audit Trail</span>
+        </Link>
       </div>
       <div className="mt-auto p-unit-md space-y-unit-xs border-t border-outline-variant">
         <Link href="#" className="flex items-center space-x-unit-md px-unit-md py-unit-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors">

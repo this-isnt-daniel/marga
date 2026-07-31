@@ -208,13 +208,17 @@ export async function simulateEvent(params: {
   description?: string;
   event_type?: string;
 }): Promise<{ status: string; event_id: string; thread_id: string }> {
-  const query = new URLSearchParams({
+  const payload = {
     route: params.route ?? 'Shanghai to Los Angeles',
     vessel_id: params.vessel_id ?? 'Evergreen',
     description: params.description ?? 'Simulated maritime disruption.',
     event_type: params.event_type ?? 'Gale Warning',
+  };
+  const res = await fetch(`${API_BASE}/events/simulate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
   });
-  const res = await fetch(`${API_BASE}/events/simulate?${query}`, { method: 'POST' });
   if (!res.ok) throw new Error('Failed to simulate event');
   return res.json();
 }
@@ -224,12 +228,16 @@ export async function simulateNewsEvent(params: {
   description: string;
   source: string;
 }): Promise<any> {
-  const query = new URLSearchParams({
+  const payload = {
     headline: params.headline,
     description: params.description,
     source: params.source,
+  };
+  const res = await fetch(`${API_BASE}/events/news/simulate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
   });
-  const res = await fetch(`${API_BASE}/events/news/simulate?${query}`, { method: 'POST' });
   if (!res.ok) throw new Error('Failed to simulate news event');
   return res.json();
 }
