@@ -192,7 +192,7 @@ async def simulate_sandbox(payload: SandboxPayload):
             print(f"Starting Sandbox graph for {event_id}...")
             
             # 1. Simulate Poller Broadcast
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(1.0)
             await broadcast_agent_thought(
                 node="news_poller",
                 thought=f"Simulated God Mode event received: {payload.event_headline}",
@@ -200,7 +200,7 @@ async def simulate_sandbox(payload: SandboxPayload):
             )
             
             # 2. Simulate Analyzer Broadcast
-            await asyncio.sleep(1.0)
+            await asyncio.sleep(4.0)
             await broadcast_agent_thought(
                 node="news_analyzer",
                 thought=f"Disruption detected from Sandbox override: {payload.event_description}. Severity: {payload.severity}. Injecting custom ERP and Freight parameters into state.",
@@ -208,7 +208,7 @@ async def simulate_sandbox(payload: SandboxPayload):
             )
 
             # 3. Simulate ERP Broadcast
-            await asyncio.sleep(1.5)
+            await asyncio.sleep(4.0)
             
             # Dynamic ERP thought
             if payload.exposure_value_usd > 10000000:
@@ -235,7 +235,7 @@ async def simulate_sandbox(payload: SandboxPayload):
             )
 
             # 4. Simulate Freight Broadcast
-            await asyncio.sleep(1.5)
+            await asyncio.sleep(4.0)
             
             # Dynamic Freight thought
             freight_len = len(payload.freight_quotes)

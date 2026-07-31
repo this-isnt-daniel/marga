@@ -110,7 +110,7 @@ async def reasoning_node(state: AgentState) -> Dict[str, Any]:
 
         # Emit scenario-specific reasoning
         if reasoning.get("erp_start"):
-            await asyncio.sleep(1.5)
+            await asyncio.sleep(4.0)
             await broadcast_reasoning_step(
                 step_number=1,
                 step_title="Querying ERP System",
@@ -118,7 +118,7 @@ async def reasoning_node(state: AgentState) -> Dict[str, Any]:
                 confidence=0.9,
             )
 
-        await asyncio.sleep(2.0)
+        await asyncio.sleep(4.0)
         request_payload = {"vessel_id": vessel_id, "route": route}
         result = query_erp.invoke(request_payload)
 
@@ -154,7 +154,7 @@ async def reasoning_node(state: AgentState) -> Dict[str, Any]:
                     + (f"⚠️ {note}" if note else "")
                 )
 
-            await asyncio.sleep(1.5)
+            await asyncio.sleep(4.0)
             await broadcast_reasoning_step(
                 step_number=1,
                 step_title="ERP Exposure Analysis",
@@ -177,7 +177,7 @@ async def reasoning_node(state: AgentState) -> Dict[str, Any]:
     elif state.get("freight_quotes") is None and len(state.get("matched_pos", [])) > 0:
         # Emit scenario-specific reasoning
         if reasoning.get("freight_start"):
-            await asyncio.sleep(1.5)
+            await asyncio.sleep(4.0)
             await broadcast_reasoning_step(
                 step_number=2,
                 step_title="Fetching Freight Alternatives",
@@ -185,7 +185,7 @@ async def reasoning_node(state: AgentState) -> Dict[str, Any]:
                 confidence=0.9,
             )
 
-        await asyncio.sleep(2.5)
+        await asyncio.sleep(4.0)
 
         # Derive origin from route
         origin = "Shanghai"
@@ -250,7 +250,7 @@ async def reasoning_node(state: AgentState) -> Dict[str, Any]:
                 if alt_routes:
                     thought_text += f" (includes quotes for alternatives: {', '.join(alt_routes[:3])})"
 
-            await asyncio.sleep(1.5)
+            await asyncio.sleep(4.0)
             await broadcast_reasoning_step(
                 step_number=2,
                 step_title="Freight Quote Analysis",
@@ -280,7 +280,7 @@ async def reasoning_node(state: AgentState) -> Dict[str, Any]:
         elif scenario == "malacca":
             delay_days = 21
 
-        await asyncio.sleep(2.0)
+        await asyncio.sleep(4.0)
         cost_result = calculate_stockout_cost.invoke({
             "inventory_value": exposure_value,
             "delay_days": delay_days,
@@ -314,7 +314,7 @@ async def reasoning_node(state: AgentState) -> Dict[str, Any]:
                 f"Projected savings: ${updates['cost_analysis']['reroute_savings_usd']:,.2f}."
             )
 
-        await asyncio.sleep(1.5)
+        await asyncio.sleep(4.0)
         await broadcast_reasoning_step(
             step_number=3,
             step_title="Cost-Benefit Analysis",
