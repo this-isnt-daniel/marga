@@ -2,7 +2,3 @@
   # Tell Netlify that the app is in the "frontend" directory
   base = "frontend"
   command = "npm run build"
-  publish = ".next"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"

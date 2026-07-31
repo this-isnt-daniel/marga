@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import DeckGL from '@deck.gl/react';
-import { ArcLayer, ScatterplotLayer, TextLayer, BitmapLayer, PathLayer } from '@deck.gl/layers';
+import { ScatterplotLayer, TextLayer, BitmapLayer, PathLayer } from '@deck.gl/layers';
 import { TileLayer } from '@deck.gl/geo-layers';
 import { _GlobeView, type PickingInfo } from '@deck.gl/core';
 
@@ -104,13 +104,7 @@ const ARCS: ShippingArc[] = [
     type: 'sea',
     label: 'Primary Sea Route (Blocked)',
   },
-  {
-    id: 'air-reroute',
-    from: { coordinates: [121.47, 31.23] },
-    to: { coordinates: [241.74, 33.73] },
-    type: 'air',
-    label: 'AI Air Reroute (Active)',
-  },
+
   {
     id: 'sea-reroute',
     from: { coordinates: [121.47, 31.23] },
@@ -231,8 +225,8 @@ export const RouteMap: React.FC<RouteMapProps> = ({ activeStep = 1, onSelectRout
           setLivePorts(disruption ? [...data.ports, disruption] : data.ports);
         }
         if (data.arcs?.length) {
-          // Merge live sea arcs with the existing reroute + secondary arcs
-          const rerouteArcs = ARCS.filter((a) => a.type === 'air' || a.type === 'sea-reroute');
+          // Merge live sea arcs with the existing reroute + secondary arcs (sea only)
+          const rerouteArcs = ARCS.filter((a) => a.type === 'sea-reroute');
           const seaArcs: ShippingArc[] = data.arcs.map((a: ShippingArc) => ({
             ...a,
             type: 'sea' as const,
@@ -274,7 +268,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({ activeStep = 1, onSelectRout
   const visibleArcs = useMemo(() => {
     return baseArcs.filter((arc) => {
       if (activeLayer === 'disrupted') return arc.type === 'sea';
-      if (activeLayer === 'reroute') return arc.type === 'air' || arc.type === 'sea-reroute';
+      if (activeLayer === 'reroute') return arc.type === 'sea-reroute';
       return true; // 'all'
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -302,27 +296,6 @@ export const RouteMap: React.FC<RouteMapProps> = ({ activeStep = 1, onSelectRout
           bounds: [bbox.west, bbox.south, bbox.east, bbox.north],
         });
       },
-    });
-
-    // --- Arc Layer (Air routes) ---
-    const arcLayer = new ArcLayer({
-      id: 'shipping-arcs',
-      data: visibleArcs.filter(d => d.type === 'air'),
-      getSourcePosition: (d: ShippingArc) => d.from.coordinates,
-      getTargetPosition: (d: ShippingArc) => d.to.coordinates,
-      getSourceColor: (): [number, number, number, number] => {
-        return [6, 182, 212, 220]; // air color
-      },
-      getTargetColor: (): [number, number, number, number] => {
-        return [16, 185, 129, 220]; // destination color
-      },
-      getWidth: 3,
-      getHeight: 0.6,
-      getDashArray: [8, 4],
-      dashJustified: true,
-      extensions: [],
-      pickable: false,
-      wrapLongitude: true,
     });
 
     // --- Path Layer (Sea routes — blocked, reroute, and secondary) ---
@@ -420,7 +393,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({ activeStep = 1, onSelectRout
       pickable: false,
     });
 
-    return [tileLayer, pathLayer, arcLayer, scatterLayer, textLayer];
+    return [tileLayer, pathLayer, scatterLayer, textLayer];
   }, [visibleArcs, ports, selectedId, isRerouted, onSelectRoute]);
 
   // -------------------------------------------------------------------------
@@ -512,9 +485,6 @@ export const RouteMap: React.FC<RouteMapProps> = ({ activeStep = 1, onSelectRout
             <p className="text-[11px] text-slate-300 leading-normal">{selectedPort.details}</p>
             {isRerouted && selectedPort.id === 'disruption-shanghai' && (
               <div className="space-y-1 pt-0.5">
-                <div className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
-                  ✈️ Air Reroute: Apex Air Freight (ETA 2 Days)
-                </div>
                 <div className="text-[10px] text-amber-400 font-semibold flex items-center gap-1">
                   🚢 Sea Reroute: Southern Pacific Bypass (ETA 18 Days)
                 </div>
@@ -529,10 +499,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({ activeStep = 1, onSelectRout
             <span className="w-4 h-0.5 bg-red-500 inline-block rounded" />
             <span>Blocked Sea Path</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-0.5 bg-cyan-400 inline-block rounded" />
-            <span>AI Air Reroute</span>
-          </div>
+
           <div className="flex items-center gap-2">
             <span className="w-4 h-0.5 bg-amber-400 inline-block rounded" />
             <span>Alt. Sea Reroute</span>
