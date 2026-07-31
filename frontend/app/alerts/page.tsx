@@ -24,8 +24,15 @@ export default function AlertsPage() {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // Fetch immediately
     fetchCards();
+    
+    // Auto-refresh every 5 seconds so new simulation cards appear automatically
+    const interval = setInterval(() => {
+      fetchCards();
+    }, 5000);
+    
+    return () => clearInterval(interval);
   }, []);
 
   const totalExposure = cards.reduce((sum, card) => sum + card.exposure.total_inventory_value_usd, 0);
