@@ -124,54 +124,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-unit-lg h-[400px]">
-        {/* Active Alerts Panel */}
-        <div className="card-surface rounded-xl flex flex-col col-span-3 h-full">
-          <div className="p-unit-md border-b border-outline-variant flex justify-between items-center bg-surface-container-low rounded-t-xl shrink-0">
-            <div className="flex items-center space-x-2">
-              <span className="material-symbols-outlined text-amber-600 text-[18px]">notifications_active</span>
-              <h2 className="text-sm font-semibold text-on-surface">Active Alerts</h2>
-              {pendingCount > 0 && (
-                <span className="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-bold">{pendingCount} pending</span>
-              )}
-            </div>
-            <span className="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">From agent</span>
-          </div>
-          <div className="divide-y divide-outline-variant flex-1 overflow-y-auto">
-            {activeEvents.length === 0 ? (
-              <div className="p-unit-md text-[12px] text-on-surface-variant text-center mt-8">
-                No active alerts. Use the <Link href="/simulation" className="text-primary hover:underline">Simulation Engine</Link> to trigger a test disruption.
-              </div>
-            ) : (
-              activeEvents.map((evt) => {
-                const s = STATUS_COLORS[evt.status] ?? STATUS_COLORS["pending"];
-                return (
-                  <div key={evt.event_id} className="p-unit-md flex items-start space-x-unit-md hover:bg-surface-container-low transition-colors">
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${evt.status === "approved" ? "bg-emerald-100" : evt.status === "rejected" ? "bg-rose-100" : "bg-amber-100"}`}>
-                      <span className={`material-symbols-outlined text-[20px] ${evt.status === "approved" ? "text-emerald-600" : evt.status === "rejected" ? "text-rose-600" : "text-amber-600"}`}>
-                        {evt.status === "approved" ? "check_circle" : evt.status === "rejected" ? "cancel" : "warning"}
-                      </span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-0.5">
-                        <span className="text-[12px] font-bold text-on-surface truncate">{evt.event_id}</span>
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ml-2 shrink-0 ${s.bg} ${s.text}`}>{s.label}</span>
-                      </div>
-                      <div className="text-[11px] text-on-surface-variant truncate">{evt.route} · {evt.vessel_id}</div>
-                      <div className="text-[10px] text-on-surface-variant mt-0.5 truncate">{evt.description}</div>
-                      <div className="flex items-center space-x-3 mt-1.5 text-[10px]">
-                        <span className="text-error font-bold">{formatUSD(evt.exposure_usd)} exposure</span>
-                        {evt.stockout_cost_usd > 0 && <span className="text-on-surface-variant">{formatUSD(evt.stockout_cost_usd)} stockout risk</span>}
-                        <span className="text-on-surface-variant">{evt.matched_pos.length} PO{evt.matched_pos.length !== 1 ? "s" : ""} affected</span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
-      </div>
 
       {/* PO Risk Table */}
       <div className="card-surface rounded-xl overflow-hidden pb-unit-lg flex-shrink-0">
