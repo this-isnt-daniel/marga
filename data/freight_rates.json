@@ -62,5 +62,45 @@
         "mode": "AIR",
         "totalCharge": { "amount": 12.0, "currency": "USD", "basis": "per_kg" },
         "transitDays": 3
+    },
+    {
+        "capacityProviderId": "MAERSK_AIR",
+        "origin": "Middle East",
+        "destination": "Europe via Strait of Hormuz",
+        "mode": "AIR",
+        "totalCharge": { "amount": 11.5, "currency": "USD", "basis": "per_kg" },
+        "transitDays": 2
+    },
+    {
+        "capacityProviderId": "DHL",
+        "origin": "Asia",
+        "destination": "Europe via Bab el Mandeb",
+        "mode": "AIR",
+        "totalCharge": { "amount": 14.0, "currency": "USD", "basis": "per_kg" },
+        "transitDays": 4
+    },
+    {
+        "capacityProviderId": "EVERGREEN_REROUTE",
+        "origin": "Asia",
+        "destination": "Europe via Bab el Mandeb",
+        "mode": "OCN",
+        "totalCharge": { "amount": 4.5, "currency": "USD", "basis": "per_kg" },
+        "transitDays": 30
+    },
+    {
+        "capacityProviderId": "FEDEX",
+        "origin": "Asia",
+        "destination": "Europe via Strait of Malacca",
+        "mode": "AIR",
+        "totalCharge": { "amount": 15.0, "currency": "USD", "basis": "per_kg" },
+        "transitDays": 3
+    },
+    {
+        "capacityProviderId": "HAPAG_LLOYD",
+        "origin": "Asia",
+        "destination": "Europe via Strait of Malacca",
+        "mode": "OCN",
+        "totalCharge": { "amount": 5.0, "currency": "USD", "basis": "per_kg" },
+        "transitDays": 35
     }
 ]

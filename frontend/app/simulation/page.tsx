@@ -333,47 +333,7 @@ export default function SimulationPage() {
           </div>
         </div>
 
-        {/* Routes Risk */}
-        <div className="card-surface rounded-xl flex flex-col h-[400px]">
-          <div className="p-unit-md border-b border-outline-variant flex justify-between items-center bg-surface-container-low rounded-t-xl">
-            <h2 className="text-sm font-semibold text-on-surface">Target Specific Routes</h2>
-            <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-widest">Manual Trigger</span>
-          </div>
-          <div className="p-unit-md space-y-unit-md flex-1 overflow-y-auto">
-            {loadingInventory ? (
-              <div className="text-[11px] text-on-surface-variant animate-pulse">Loading routes…</div>
-            ) : inventory?.routes.length === 0 ? (
-              <div className="text-[11px] text-on-surface-variant">No routes tracked.</div>
-            ) : (
-              inventory?.routes.map((r) => {
-                const maxExposure = Math.max(...(inventory?.routes.map(x => x.exposure_usd) ?? [1]));
-                const pct = Math.round((r.exposure_usd / maxExposure) * 100);
-                return (
-                  <div key={r.route} className="space-y-1.5">
-                    <div className="flex justify-between text-[11px]">
-                      <span className="font-medium text-on-surface truncate max-w-[70%]">{r.route}</span>
-                      <span className="font-bold text-error ml-2">{formatUSD(r.exposure_usd)}</span>
-                    </div>
-                    <div className="h-1.5 bg-surface-container-low rounded-full overflow-hidden">
-                      <div className="h-full bg-error rounded-full transition-all duration-500" style={{ width: `${pct}%` }}></div>
-                    </div>
-                    <div className="flex justify-between text-[9px] text-on-surface-variant">
-                      <span className="font-medium">{r.po_count} PO{r.po_count !== 1 ? "s" : ""} tracked</span>
-                    </div>
-                    <button
-                      onClick={() => handleSimulate(r.route, r.pos[0]?.vessel_id)}
-                      disabled={triggering}
-                      className="w-full mt-1 py-1.5 border border-outline-variant rounded-lg text-[10px] text-on-surface font-semibold hover:bg-amber-50 hover:border-amber-300 hover:text-amber-700 transition-colors text-left px-2 flex items-center disabled:opacity-50"
-                    >
-                      <span className="material-symbols-outlined text-[12px] mr-1">bolt</span>
-                      Simulate disruption on {r.route.split(" to ")[0]}
-                    </button>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
+
       </div>
 
       {/* Right Panel: Agent Activity */}

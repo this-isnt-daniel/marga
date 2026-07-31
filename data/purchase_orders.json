@@ -168,5 +168,53 @@
                 "rate": 120.0
             }
         ]
+    },
+    {
+        "name": "PO-6001",
+        "docstatus": 1,
+        "supplier": "Suez Traders",
+        "custom_vessel_id": "NEWS-AUTO",
+        "custom_route": "Middle East to Europe via Suez Canal",
+        "custom_match_confidence": 1.0,
+        "custom_customer_order_ids": ["CO-601"],
+        "items": [
+            {"item_code": "ITEM-S1", "item_name": "Suez Goods", "qty": 1000, "rate": 50.0}
+        ]
+    },
+    {
+        "name": "PO-7001",
+        "docstatus": 1,
+        "supplier": "Hormuz Oil",
+        "custom_vessel_id": "NEWS-AUTO",
+        "custom_route": "Middle East to Europe via Strait of Hormuz",
+        "custom_match_confidence": 1.0,
+        "custom_customer_order_ids": ["CO-701"],
+        "items": [
+            {"item_code": "ITEM-H1", "item_name": "Hormuz Oil Barrels", "qty": 5000, "rate": 80.0}
+        ]
+    },
+    {
+        "name": "PO-8001",
+        "docstatus": 1,
+        "supplier": "Red Sea Shipping",
+        "custom_vessel_id": "NEWS-AUTO",
+        "custom_route": "Asia to Europe via Bab el Mandeb",
+        "custom_match_confidence": 1.0,
+        "custom_customer_order_ids": ["CO-801"],
+        "items": [
+            {"item_code": "ITEM-B1", "item_name": "Bab el Mandeb Cargo", "qty": 2000, "rate": 100.0}
+        ]
+    },
+    {
+        "name": "PO-9001",
+        "docstatus": 1,
+        "supplier": "Malacca Tech",
+        "custom_vessel_id": "NEWS-AUTO",
+        "custom_route": "Asia to Europe via Strait of Malacca",
+        "custom_match_confidence": 1.0,
+        "custom_customer_order_ids": ["CO-901"],
+        "items": [
+            {"item_code": "ITEM-M1", "item_name": "Malacca Electronics", "qty": 10000, "rate": 20.0}
+        ]
     }
 ]

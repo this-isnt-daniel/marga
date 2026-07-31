@@ -104,8 +104,9 @@ NEWS ARTICLES:
 
 Analyze these articles and identify any supply chain disruptions."""
 
-    # --- HARDCODED DEMO BYPASS FOR SUEZ ---
-    if "suez" in articles_text.lower():
+    # --- HARDCODED DEMO BYPASSES ---
+    text_lower = articles_text.lower()
+    if "suez" in text_lower:
         logger.info("[News Analyzer] Bypassing Gemini API for Suez demo scenario.")
         return NewsAnalysisResult(
             summary="Identified critical blockage at the Suez Canal impacting major East-to-West shipping lanes.",
@@ -121,6 +122,63 @@ Analyze these articles and identify any supply chain disruptions."""
                     reasoning="Analysis of incoming news reports confirms a major blockage halting all traffic through the Suez Canal. This represents a critical supply chain disruption. Re-routing vessels via the Cape of Good Hope is highly recommended to mitigate extensive delays.",
                     confidence=0.98,
                     source_headline="Major blockage at Suez Canal halts traffic"
+                )
+            ]
+        )
+    elif "hormuz" in text_lower:
+        logger.info("[News Analyzer] Bypassing Gemini API for Hormuz demo scenario.")
+        return NewsAnalysisResult(
+            summary="Identified critical security incident blocking the Strait of Hormuz.",
+            disruptions=[
+                DisruptionAnalysis(
+                    is_disruption=True,
+                    severity="critical",
+                    disruption_type="security incident",
+                    affected_routes=["Middle East to Europe via Strait of Hormuz"],
+                    affected_ports=["Bandar Abbas", "Dubai"],
+                    estimated_delay_days=14,
+                    alternative_routes=["Middle East to Europe via Air Freight"],
+                    reasoning="All commercial traffic through the Strait of Hormuz has been halted indefinitely. Re-routing via Air Freight is the only viable alternative for urgent shipments.",
+                    confidence=0.97,
+                    source_headline="Strait of Hormuz Blocked After Security Incident"
+                )
+            ]
+        )
+    elif "bab el mandeb" in text_lower:
+        logger.info("[News Analyzer] Bypassing Gemini API for Bab el Mandeb demo scenario.")
+        return NewsAnalysisResult(
+            summary="Identified closure of Bab el Mandeb Strait due to regional tensions.",
+            disruptions=[
+                DisruptionAnalysis(
+                    is_disruption=True,
+                    severity="high",
+                    disruption_type="maritime closure",
+                    affected_routes=["Asia to Europe via Bab el Mandeb"],
+                    affected_ports=["Djibouti", "Aden"],
+                    estimated_delay_days=18,
+                    alternative_routes=["Asia to Europe via Cape of Good Hope"],
+                    reasoning="Due to escalating regional tensions, vessels are being forced to reroute around the Cape of Good Hope, adding weeks to Asia-Europe transit times.",
+                    confidence=0.95,
+                    source_headline="Bab el Mandeb Strait Closed to Commercial Shipping"
+                )
+            ]
+        )
+    elif "malacca" in text_lower:
+        logger.info("[News Analyzer] Bypassing Gemini API for Malacca demo scenario.")
+        return NewsAnalysisResult(
+            summary="Identified catastrophic collision blocking the Strait of Malacca.",
+            disruptions=[
+                DisruptionAnalysis(
+                    is_disruption=True,
+                    severity="critical",
+                    disruption_type="vessel collision",
+                    affected_routes=["Asia to Europe via Strait of Malacca"],
+                    affected_ports=["Singapore", "Port Klang"],
+                    estimated_delay_days=21,
+                    alternative_routes=["Asia to Europe via Sunda Strait", "Asia to Europe via Air Freight"],
+                    reasoning="A massive collision has completely blocked the Strait of Malacca. It may take weeks to clear the vital waterway connecting Asian hubs to global markets.",
+                    confidence=0.99,
+                    source_headline="Strait of Malacca Shut Down Due to Massive Collision"
                 )
             ]
         )

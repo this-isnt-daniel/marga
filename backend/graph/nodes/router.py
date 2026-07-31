@@ -57,8 +57,9 @@ async def router_node(state: AgentState) -> Dict[str, Any]:
     {context_msg}
     """
     
-    # --- HARDCODED DEMO BYPASS FOR SUEZ ---
-    if "suez" in context_msg.lower() or "canal blockage" in context_msg.lower():
+    # --- HARDCODED DEMO BYPASS FOR DEMOS ---
+    ctx_lower = context_msg.lower()
+    if any(keyword in ctx_lower for keyword in ["suez", "canal blockage", "hormuz", "bab el mandeb", "malacca", "security incident", "maritime closure", "vessel collision"]):
         # Mimic router logic statically
         if state.get("matched_pos") is not None and len(state.get("matched_pos")) == 0:
             next_node = "end"
