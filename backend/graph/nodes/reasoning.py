@@ -48,7 +48,7 @@ async def reasoning_node(state: AgentState) -> Dict[str, Any]:
     raw_event = state.get("raw_event", {})
 
     # ── Step 1: Query ERP if we don't have PO data yet ────────────────────
-    if not state.get("matched_pos"):
+    if state.get("matched_pos") is None:
         vessel_id = raw_event.get("vessel_id", "")
         route = raw_event.get("route", "")
 
@@ -86,7 +86,7 @@ async def reasoning_node(state: AgentState) -> Dict[str, Any]:
             )
 
     # ── Step 2: Get freight quotes if POs found but no quotes yet ─────────
-    elif not state.get("freight_quotes"):
+    elif state.get("freight_quotes") is None and len(state.get("matched_pos", [])) > 0:
         # Derive origin from route; default to standard Shanghai→LA demo lane
         route = raw_event.get("route", "")
         origin = "Shanghai"

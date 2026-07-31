@@ -32,8 +32,9 @@ async def router_node(state: AgentState) -> Dict[str, Any]:
     context_msg = (
         f"Current Step: {state.get('current_step', 'start')}\n"
         f"Event ID: {state.get('event_id')}\n"
+        f"ERP Queried: {state.get('matched_pos') is not None}\n"
         f"Matched POs: {len(state.get('matched_pos', []))}\n"
-        f"Has Freight Quotes: {len(state.get('freight_quotes', [])) > 0}\n"
+        f"Has Freight Quotes: {state.get('freight_quotes') is not None}\n"
         f"Has Cost Analysis: {state.get('cost_analysis') is not None}\n"
         f"Approval Decision: {state.get('approval_decision')}\n"
         f"{news_info}"
@@ -44,6 +45,7 @@ async def router_node(state: AgentState) -> Dict[str, Any]:
     determine the next node to execute.
 
     Rules:
+    - If ERP Queried is True and Matched POs is 0, route to 'end'.
     - If there are no freight quotes OR no cost analysis yet, route to 'reasoning_node'.
     - If reasoning is complete (freight quotes AND cost analysis exist) but approval is missing, route to 'hitl_gate'.
     - If approval is 'approved', route to 'execute'.
@@ -58,7 +60,10 @@ async def router_node(state: AgentState) -> Dict[str, Any]:
     # --- HARDCODED DEMO BYPASS FOR SUEZ ---
     if "suez" in context_msg.lower() or "canal blockage" in context_msg.lower():
         # Mimic router logic statically
-        if not state.get("freight_quotes") or not state.get("cost_analysis"):
+        if state.get("matched_pos") is not None and len(state.get("matched_pos")) == 0:
+            next_node = "end"
+            rationale = "No impacted POs found."
+        elif state.get("freight_quotes") is None or state.get("cost_analysis") is None:
             next_node = "reasoning_node"
             rationale = "Gathering context."
         elif state.get("approval_decision") is None:
